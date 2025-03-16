@@ -1,4 +1,184 @@
-### React State and Lifecycle
+# **State and Lifecycle in React**  
+
+## **Definition**  
+State and Lifecycle are **core concepts in React** used for managing dynamic data and rendering components accordingly.  
+
+- **State:** Stores component-specific data that affects rendering.  
+- **Lifecycle:** Defines the different phases of a React component's existence.  
+
+---
+
+## **State in React**  
+
+### **What is State?**  
+State is an **object** that holds dynamic data **local** to a component.  
+- It **controls rendering** based on changes in data.  
+- **Modifying state triggers re-rendering.**  
+
+---
+
+### **Declaring State in a Class Component**  
+```jsx
+class Counter extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { count: 0 };
+  }
+
+  render() {
+    return <h1>Count: {this.state.count}</h1>;
+  }
+}
+```
+- The state is **initialized inside the constructor.**  
+- It is an **object** storing values affecting the UI.  
+
+---
+
+### **Updating State using `setState()`**  
+```jsx
+this.setState({ count: this.state.count + 1 });
+```
+- **Never modify state directly** (`this.state.count = 1;` ❌).  
+- `setState()` **merges the new state with the existing state** and triggers a re-render.  
+
+#### **Example: State Update in an Event**  
+```jsx
+class Counter extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { count: 0 };
+  }
+
+  increment = () => {
+    this.setState({ count: this.state.count + 1 });
+  };
+
+  render() {
+    return (
+      <div>
+        <h1>Count: {this.state.count}</h1>
+        <button onClick={this.increment}>Increment</button>
+      </div>
+    );
+  }
+}
+```
+
+---
+
+## **Functional Components and State (Hooks: `useState`)**  
+Functional components use **hooks** to manage state.  
+```jsx
+import { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <h1>Count: {count}</h1>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+```
+- **`useState()` returns an array** with the current state and an update function.  
+- State updates **re-render the component.**  
+
+---
+
+## **Lifecycle Methods in Class Components**  
+React components go through three lifecycle phases:  
+
+| Phase | Method | Purpose |  
+|--------|---------|----------|  
+| **Mounting** | `constructor()` | Initialize state |  
+|  | `componentDidMount()` | Run after component is rendered |  
+| **Updating** | `shouldComponentUpdate()` | Optimize re-renders |  
+|  | `componentDidUpdate()` | Run after state or props change |  
+| **Unmounting** | `componentWillUnmount()` | Cleanup tasks before removal |  
+
+### **Example: Lifecycle Methods**
+```jsx
+class LifecycleExample extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { count: 0 };
+  }
+
+  componentDidMount() {
+    console.log("Component mounted!");
+  }
+
+  componentDidUpdate() {
+    console.log("Component updated!");
+  }
+
+  componentWillUnmount() {
+    console.log("Component will unmount!");
+  }
+
+  render() {
+    return <h1>Lifecycle Example</h1>;
+  }
+}
+```
+
+---
+
+## **Lifecycle in Functional Components (`useEffect`)**  
+Functional components use **`useEffect()`** for lifecycle behaviors.  
+```jsx
+import { useState, useEffect } from "react";
+
+function Example() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    console.log("Component mounted or updated!");
+    return () => console.log("Cleanup before unmounting.");
+  }, [count]);
+
+  return (
+    <div>
+      <h1>Count: {count}</h1>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+```
+- Runs **on mount and update** (`componentDidMount` + `componentDidUpdate`).  
+- Cleanup function acts as **`componentWillUnmount()`**.  
+
+---
+
+## **Diagram: State and Lifecycle Flow**  
+```mermaid
+graph TD;
+  A[Component Created] --> B[Constructor Initializes State];
+  B --> C[Render Component];
+  C --> D[ComponentDidMount];
+  D --> E[User Interaction/State Change];
+  E -->|setState()| F[Re-render Component];
+  F --> G[ComponentDidUpdate];
+  G -->|User Leaves| H[ComponentWillUnmount];
+```
+
+---
+
+## **Key Takeaways**  
+- **State** manages **dynamic data** in React.  
+- **Lifecycle** controls **component behavior** during mount, update, and unmount.  
+- **Class Components use lifecycle methods** like `componentDidMount()`, `componentDidUpdate()`.  
+- **Functional Components use `useState` for state and `useEffect` for lifecycle.**
+
+
+---
+---
+
+
+## React State and Lifecycle
 
 #### State
 

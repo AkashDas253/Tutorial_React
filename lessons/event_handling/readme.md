@@ -1,4 +1,194 @@
-### React Event Handling
+# **Event Handling in React**  
+
+## **Definition**  
+Event handling in React refers to how components respond to user interactions, such as **clicks, form submissions, keyboard inputs, mouse movements, and more**. React follows a **synthetic event system**, which wraps the native event system for **better performance and compatibility**.  
+
+---
+
+## **Handling Events in Functional Components**  
+Event handlers are defined as functions and passed to JSX elements using curly braces `{}`.  
+
+### **Example (Button Click Event)**
+```jsx
+function App() {
+  function handleClick() {
+    alert("Button clicked!");
+  }
+
+  return <button onClick={handleClick}>Click Me</button>;
+}
+```
+- `onClick` listens for clicks and calls `handleClick()`.  
+
+---
+
+## **Handling Events in Class Components**  
+In class components, event handlers are methods, and `this` needs binding.  
+
+```jsx
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    alert("Button clicked!");
+  }
+
+  render() {
+    return <button onClick={this.handleClick}>Click Me</button>;
+  }
+}
+```
+- `this.handleClick = this.handleClick.bind(this);` ensures `this` refers to the class instance.  
+
+### **Alternative: Using Arrow Functions**  
+```jsx
+class App extends React.Component {
+  handleClick = () => {
+    alert("Button clicked!");
+  };
+
+  render() {
+    return <button onClick={this.handleClick}>Click Me</button>;
+  }
+}
+```
+- Arrow functions **automatically bind** `this`.  
+
+---
+
+## **Passing Arguments to Event Handlers**  
+```jsx
+function App() {
+  function handleClick(name) {
+    alert(`Hello, ${name}!`);
+  }
+
+  return <button onClick={() => handleClick("Alice")}>Greet</button>;
+}
+```
+- **Using an arrow function** ensures `handleClick("Alice")` is only called **when clicked**.  
+
+---
+
+## **Handling Events with `useState`**  
+```jsx
+import { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  function increment() {
+    setCount(count + 1);
+  }
+
+  return <button onClick={increment}>Count: {count}</button>;
+}
+```
+- Clicking the button **updates the state** using `setCount(count + 1)`.  
+
+---
+
+## **Handling Form Events**  
+React **controls form elements** using **state**.  
+
+### **Example (Controlled Input)**
+```jsx
+import { useState } from "react";
+
+function Form() {
+  const [text, setText] = useState("");
+
+  function handleChange(event) {
+    setText(event.target.value);
+  }
+
+  return (
+    <div>
+      <input type="text" value={text} onChange={handleChange} />
+      <p>You typed: {text}</p>
+    </div>
+  );
+}
+```
+- The `value` of the input is **controlled by state**.  
+- `onChange` updates `text` with `event.target.value`.  
+
+---
+
+## **Preventing Default Behavior**  
+To prevent default actions (e.g., form submission, link navigation), use `event.preventDefault()`.  
+
+```jsx
+function Form() {
+  function handleSubmit(event) {
+    event.preventDefault();
+    alert("Form submitted!");
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+- The form **does not reload the page** when submitted.  
+
+---
+
+## **Event Bubbling and Capturing**  
+React supports event **bubbling (default)** and **capturing (by using `onClickCapture`)**.  
+
+```jsx
+function App() {
+  function handleOuterClick() {
+    alert("Outer div clicked!");
+  }
+
+  function handleInnerClick(event) {
+    alert("Inner button clicked!");
+    event.stopPropagation(); // Stops bubbling
+  }
+
+  return (
+    <div onClick={handleOuterClick}>
+      <button onClick={handleInnerClick}>Click Me</button>
+    </div>
+  );
+}
+```
+- Clicking the **button** alerts `"Inner button clicked!"` but **stops the outer div's event** using `event.stopPropagation()`.  
+
+---
+
+## **Diagram: Event Flow in React**  
+```mermaid
+graph LR;
+  A[User Clicks Button] -->|Event Capturing| B[React Synthetic Event];
+  B -->|Event Bubbling| C[Parent Element];
+  C -->|Event Bubbling| D[Root Element];
+  B -.->|event.stopPropagation()| E[Stop Bubbling];
+```
+
+---
+
+## **Key Takeaways**  
+- React uses a **synthetic event system** for **performance** and **cross-browser compatibility**.  
+- Events are passed as functions in JSX (`onClick={handleClick}`).  
+- Class components require `this` binding for event handlers.  
+- Arrow functions simplify event handling in class components.  
+- **`event.preventDefault()`** prevents default browser actions.  
+- **`event.stopPropagation()`** stops event bubbling.  
+- Forms in React are **controlled using state**.
+
+---
+---
+
+
+## React Event Handling
 
 #### Description
 Event handling in React is similar to handling events in DOM elements, but with some syntactic differences. React events are named using camelCase, and you pass a function as the event handler rather than a string.

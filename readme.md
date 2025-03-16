@@ -18,6 +18,8 @@ Here’s the updated structured list with applicable links:
   - [useRef](lessons/use_ref/readme.md)  
   - [useMemo](lessons/use_memo/readme.md)  
   - [useCallback](lessons/use_callback/readme.md)  
+  - [useLayoutEffect](lessons/use_layout_effect/readme.md)
+  - [useImperativeHandle](lessons/use_imperative_handle/readme.md)
   - [Custom Hooks](lessons/custom_hooks/readme.md)  
 - [JSX](lessons/jsx/readme.md)  
 - [State and Lifecycle](lessons/state_lifecycle/readme.md)  
